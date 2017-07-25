@@ -1,6 +1,10 @@
-<h1>Editing Soup</h1>
-
-<%= render 'form', soup: @soup %>
-
-<%= link_to 'Show', @soup %> |
-<%= link_to 'Back', soups_path %>
+<h1>Редактирование Первого блюда</h1>
+<% if current_user == User.first %>
+  <div class="row">
+    <div class="col-md-6">
+      <%= render 'form', soup: @soup %>
+    </div>
+  </div>
+<% else %>
+  <p>Здесь может шариться только Admin</p>
+<% end %>

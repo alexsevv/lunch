@@ -1,6 +1,10 @@
-<h1>Editing Drink</h1>
-
-<%= render 'form', drink: @drink %>
-
-<%= link_to 'Show', @drink %> |
-<%= link_to 'Back', drinks_path %>
+<h1>Редактирование Напитка</h1>
+<% if current_user == User.first %>
+  <div class="row">
+    <div class="col-md-6">
+      <%= render 'form', drink: @drink %>
+    </div>
+  </div>
+<% else %>
+  <p>Здесь может шариться только Admin</p>
+<% end %>

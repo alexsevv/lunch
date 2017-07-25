@@ -1,15 +1,9 @@
 class CerealsController < ApplicationController
-  before_action :set_cereal, only: [:show, :edit, :update, :destroy]
+  before_action :set_cereal, only: [:edit, :update]
 
   # GET /cereals
-  # GET /cereals.json
   def index
     @cereals = Cereal.all
-  end
-
-  # GET /cereals/1
-  # GET /cereals/1.json
-  def show
   end
 
   # GET /cereals/new
@@ -22,42 +16,22 @@ class CerealsController < ApplicationController
   end
 
   # POST /cereals
-  # POST /cereals.json
   def create
     @cereal = Cereal.new(cereal_params)
 
-    respond_to do |format|
-      if @cereal.save
-        format.html { redirect_to @cereal, notice: 'Cereal was successfully created.' }
-        format.json { render :show, status: :created, location: @cereal }
-      else
-        format.html { render :new }
-        format.json { render json: @cereal.errors, status: :unprocessable_entity }
-      end
+    if @cereal.save
+      redirect_to cereals_url, notice: I18n.t('controllers.cereals.created')
+    else
+      render :new
     end
   end
 
   # PATCH/PUT /cereals/1
-  # PATCH/PUT /cereals/1.json
   def update
-    respond_to do |format|
-      if @cereal.update(cereal_params)
-        format.html { redirect_to @cereal, notice: 'Cereal was successfully updated.' }
-        format.json { render :show, status: :ok, location: @cereal }
-      else
-        format.html { render :edit }
-        format.json { render json: @cereal.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /cereals/1
-  # DELETE /cereals/1.json
-  def destroy
-    @cereal.destroy
-    respond_to do |format|
-      format.html { redirect_to cereals_url, notice: 'Cereal was successfully destroyed.' }
-      format.json { head :no_content }
+    if @cereal.update(cereal_params)
+      redirect_to @cereal, notice: I18n.t('controllers.cereals.updated')
+    else
+      render :edit
     end
   end
 
@@ -69,6 +43,6 @@ class CerealsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def cereal_params
-      params.fetch(:cereal, {})
+      params.require(:cereal).permit(:name, :price, :photo)
     end
 end

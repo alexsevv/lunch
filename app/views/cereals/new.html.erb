@@ -1,5 +1,10 @@
-<h1>New Cereal</h1>
-
-<%= render 'form', cereal: @cereal %>
-
-<%= link_to 'Back', cereals_path %>
+<h1>Новое Второе блюдо</h1>
+<% if current_user == User.first %>
+  <div class="row">
+    <div class="col-md-6">
+      <%= render 'form', cereal: @cereal %>
+    </div>
+  </div>
+<% else %>
+  <p>Здесь может шариться только Admin</p>
+<% end %>
