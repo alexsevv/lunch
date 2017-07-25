@@ -29,7 +29,7 @@ class CerealsController < ApplicationController
   # PATCH/PUT /cereals/1
   def update
     if @cereal.update(cereal_params)
-      redirect_to @cereal, notice: I18n.t('controllers.cereals.updated')
+      redirect_to cereals_url, notice: I18n.t('controllers.cereals.updated')
     else
       render :edit
     end

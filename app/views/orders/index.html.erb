@@ -1,25 +1,31 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Orders</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @orders.each do |order| %>
-      <tr>
-        <td><%= link_to 'Show', order %></td>
-        <td><%= link_to 'Edit', edit_order_path(order) %></td>
-        <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Order', new_order_path %>
+<h1>Заказы</h1>
+<% if current_user == User.first %>
+  <div class="row">
+    <div class="col-md-12 buffer-top">
+      <table class="table table-striped">
+        <tr>
+          <td><b>ID</b></td>
+          <td><b>Пользователь</b></td>
+          <td><b>Дата заказа</b></td>
+          <td><b>Первое</b></td>
+          <td><b>Второе</b></td>
+          <td><b>Напиток</b></td>
+          <td><b>Общая сумма заказа</b></td>
+        </tr>
+        <% @orders.each do |order| %>
+          <tr>
+            <td><%= order.id %></td>
+            <td><%= order.user.name %></td>
+            <td><%= l order.created_at, format: :long %></td>
+            <td><%= order.soup.name %></td>
+            <td><%= order.cereal.name %></td>
+            <td><%= order.drink.name %></td>
+            <td><%= order.soup.price + order.cereal.price + order.drink.price %> руб.</td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+  </div>
+<% else %>
+  <p>Здесь может шариться только Admin</p>
+<% end %>

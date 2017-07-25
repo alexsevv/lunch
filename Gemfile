@@ -19,8 +19,8 @@ gem 'simple_form'
 #gem 'fog-aws'
 
 #для загрузки и обработки изображений
-#gem 'carrierwave', '~> 1.0'
-#gem 'rmagick'
+gem 'carrierwave', '~> 1.0'
+gem 'rmagick'
 
 group :production do
   gem 'pg'

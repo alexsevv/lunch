@@ -6,7 +6,8 @@
           <table class="table table-striped">
             <tr>
               <td><b>ID</b></td>
-              <td><b>Имя</b></td>
+              <td><b>Имя</b></td>\
+              <td><b>Дата создания</b></td>
               <td><b>Управление</b></td>
               <td><b>Фото</b></td>
             </tr>
@@ -14,8 +15,9 @@
             <tr>
               <td><%= soup.id %></td>
               <td><%= soup.name %></td>
+              <td><%= soup.created_at %></td>
               <td><%= link_to fa_icon('pencil'), edit_soup_path(soup), :title => 'Редактировать' %></td>
-              <td><img src="<%= soup.photo %>" alt="<%= soup.name %>"></td>
+              <td><img src="<%= soup.photo.thumb.url %>" alt="<%= soup.name %>"></td>
             </tr>
             <% end %>
           </table>
