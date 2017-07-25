@@ -1,6 +1,11 @@
-<h1>Editing User</h1>
+<% if current_user == @user || current_user == User.first %>
+<h1>Редактирование профиля</h1>
 
-<%= render 'form', user: @user %>
-
-<%= link_to 'Show', @user %> |
-<%= link_to 'Back', users_path %>
+<div class="row">
+  <div class="col-md-6 buffer-top">
+    <%= render 'form', user: @user %>
+  </div>
+</div>
+<% else %>
+  <p>У Вас нет права здесь находится</p>
+<% end %>

@@ -1,4 +1,14 @@
-<p id="notice"><%= notice %></p>
-
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<% if current_user == @user || current_user == User.first %>
+  <h1>Пользователь <%= @user.name %></h1>
+  <div class="row">
+    <div class="col-md-12 buffer-top">
+      <p>Почтовый ящик: <b><%= @user.email %></b></p>
+      <p>Сделал заказов: <b><%= @user.orders.size %></b></p>
+    </div>
+  </div>
+  <div class="buffer-both">
+    <%= link_to 'Редактировать профиль', edit_user_path(@user), class: 'btn btn-primary' %>
+  </div>
+<% else %>
+  <p>У Вас нет права здесь находится</p>
+<% end %>

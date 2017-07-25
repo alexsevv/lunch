@@ -24,7 +24,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      redirect_to @user, notice: 'yes'
+      redirect_to @user, notice: I18n.t('controllers.users.created')
     else
       render :new, notice: 'no'
     end
@@ -33,16 +33,10 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   def update
     if @user.update(user_params)
-      redirect_to @user, notice: 'yes'
+      redirect_to @user, notice: I18n.t('controllers.users.updated')
     else
       render :edit, notice: 'no'
     end
-  end
-
-  # DELETE /users/1
-  def destroy
-    @user.destroy
-    redirect_to users_url, notice: 'User was successfully destroyed.'
   end
 
   private

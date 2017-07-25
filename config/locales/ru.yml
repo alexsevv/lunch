@@ -1,0 +1,43 @@
+ru:
+  activerecord:
+    models:
+      user: 'Пользователь'
+      order: 'Заказ'
+      drink: 'Напиток'
+      soup: 'Первое'
+      cereal: 'Второе'
+    attributes:
+      user:
+        email: 'Email'
+        name: 'Имя'
+        password: 'Пароль'
+        password_confirmation: 'Подтверждение пароля'
+      item:
+        name: 'Название'
+        price: 'Цена'
+        photo: 'Фото'
+    errors:
+      messages:
+        existed_email: 'Используется другим пользователем'
+        extension_whitelist_error: 'Неверный формат файла'
+
+  # Перевод сообщений, которые отправляет контроллер
+  controllers:
+    items:
+      created: 'Вы добавили новое блюдо'
+      updated: 'Вы обновили блюдо'
+    users:
+      updated: 'Вы обновили свой профиль'
+    orders:
+      created: 'Ваш заказ отправлен на обработку'
+      error: 'Не удалось создать заказ. Нужно зайти в систему и выбрать три блюда: первое, второе и напиток.'
+
+  app:
+    name: 'Ланч'
+
+  error:
+    one: '%{count} ошибка'
+    few: '%{count} ошибки'
+    many: '%{count} ошибок'
+
+  are_you_sure: 'Вы уверены?'
