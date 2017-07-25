@@ -13,7 +13,7 @@ gem 'twitter-bootstrap-rails'
 gem 'font-awesome-rails'
 gem 'uglifier'
 gem 'jquery-rails'
-#gem 'simple_form'
+gem 'simple_form'
 
 #для загрузки файлов через хероку на амазон
 #gem 'fog-aws'

@@ -1,0 +1,15 @@
+<h2>Забыли пароль?</h2>
+
+<%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+  <%= devise_error_messages! %>
+  <div class="row">
+    <div class="col-md-4 buffer-top">
+      <%= f.input :email, autofocus: true %>
+      <%= f.button :submit, "Пришлите мне инструкции сброс пароля", class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>
+
+<div class="buffer-both">
+  <%= render "devise/shared/links" %>
+</div>
