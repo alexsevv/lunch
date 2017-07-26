@@ -25,9 +25,9 @@ class OrdersController < ApplicationController
     @order.user = current_user
 
     if @order.save
-      redirect_to items_url,  notice: I18n.t('controllers.orders.created')
+      redirect_to root_url,  notice: I18n.t('controllers.orders.created')
     else
-      redirect_to items_url, notice: I18n.t('controllers.orders.error')
+      redirect_to root_url, notice: I18n.t('controllers.orders.error')
     end
   end
 
@@ -39,6 +39,6 @@ class OrdersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def order_params
-      params.require(:order).permit(:first_dish, :second_dish, :drink)
+      params.require(:order).permit(:soup_id, :cereal_id, :drink_id)
     end
 end
