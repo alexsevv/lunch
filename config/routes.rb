@@ -8,4 +8,8 @@ Rails.application.routes.draw do
   resources :cereals
   resources :drinks
   resources :soups
+
+  namespace :api do
+    resources :orders, only: [:index]
+  end
 end
