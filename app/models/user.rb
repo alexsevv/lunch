@@ -10,6 +10,8 @@ class User < ApplicationRecord
 
   before_validation :set_name, on: :create
 
+  has_secure_token :token
+
   private
 
   def set_name

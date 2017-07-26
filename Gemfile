@@ -15,7 +15,8 @@ gem 'uglifier'
 gem 'jquery-rails'
 gem 'simple_form'
 
-
+#для создания ключа, понадобится для доступа к api
+gem 'has_secure_token'
 
 #для загрузки файлов через хероку на амазон
 #gem 'fog-aws'
