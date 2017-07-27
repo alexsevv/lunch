@@ -60,7 +60,7 @@
         </div>
       <% end %>
 
-      <% if Drink.where(created_at: (Time.now.midnight - 1.day)..Time.now.midnight).present? %>
+      <% if Drink.where(created_at: (Time.now.midnight..Time.now.midnight + 1.day)).present? %>
         <h3>Напитки</h3>
         <div class="row">
           <% Drink.where(created_at: (Time.now.midnight..Time.now.midnight + 1.day)).each do |drink| %>
@@ -125,7 +125,7 @@
     <% if Drink.where(created_at: (Time.now.midnight - 1.day)..Time.now.midnight).present? %>
       <h3>Напитки</h3>
       <div class="row">
-        <% Drink.where(created_at: (Time.now.midnight..Time.now.midnight + 1.day)).each do |drink| %>
+        <% Drink.where(created_at: (Time.now.midnight - 1.day)..Time.now.midnight).each do |drink| %>
           <div class="col-md-3 col-sm-6">
             <div class="thumbnail">
               <img src="<%= drink.photo %>" alt="<%= drink.name %>">
