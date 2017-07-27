@@ -4,6 +4,9 @@
     <div class="col-md-12 buffer-top">
       <p>Почтовый ящик: <b><%= @user.email %></b></p>
       <p>Сделал заказов: <b><%= @user.orders.size %></b></p>
+      <% if current_user == User.first %>
+        <p>Токен: <%= @user.token %></p>
+      <% end %>
     </div>
   </div>
   <div class="buffer-both">
