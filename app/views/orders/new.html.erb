@@ -81,8 +81,8 @@
             </div>
           <% end %>
         </div>
+        <%= f.button :submit if user_signed_in? %>
       <% end %>
-    <%= f.button :submit if user_signed_in? %>
     <% end %>
   </div>
 
