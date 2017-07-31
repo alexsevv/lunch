@@ -7,406 +7,85 @@
   <li class=""><a href="#today-3" data-toggle="tab"><%= Date::DAYNAMES[Date.today.wday-3] %></a></li>
   <li class=""><a href="#today-2" data-toggle="tab"><%= Date::DAYNAMES[Date.today.wday-2] %></a></li>
   <li class=""><a href="#today-1" data-toggle="tab"><%= Date::DAYNAMES[Date.today.wday-1] %></a></li>
-  <li class="active"><a href="#today" data-toggle="tab"><%= Date::DAYNAMES[Date.today.wday] %></a></li>
+  <li class="active"><a href="#today-0" data-toggle="tab"><%= Date::DAYNAMES[Date.today.wday] %></a></li>
 </ul>
 
+
 <div id="myTabContent" class="tab-content">
-  <div class="tab-pane fade active in" id="today">
-    <%= simple_form_for(Order.new, :url => { :action=>"create", :controller=>"orders" }) do |f| %>
-      <h2>Блюда на Сегодня(<%= Date::DAYNAMES[Date.today.wday] %>)</h2>
-      <% if Soup.where(created_at: (Time.now.midnight..Time.now.midnight + 1.day)).present? %>
-        <h3>Первые блюда</h3>
-        <div class="row">
-          <% Soup.where(created_at: (Time.now.midnight..Time.now.midnight + 1.day)).each do |soup| %>
-            <div class="col-md-3 col-sm-6">
-              <div class="thumbnail">
-                <img src="<%= soup.photo %>" alt="<%= soup.name %>">
-                <div class="caption">
-                  <h4><%= soup.name %></h4>
-                  <p>Цена: <%= soup.price %></p>
-                  <% if user_signed_in? %>
-                    <input id="order_soup_id" name="order[soup_id]" type="radio" value="<%= soup.id %>" checked>
-                  <% end %>
-                  <% if current_user == User.first %>
-                    <%= link_to 'Редактировать', edit_soup_path(soup), :title => 'Редактировать' %>
-                  <% end %>
+  <% created_day = 0 %>
+  <% while created_day < 7 %>
+    <div class="tab-pane fade <%= "active in" if created_day == 0 %>" id="today-<%= created_day %>">
+      <%= simple_form_for(Order.new, :url => { :action=>"create", :controller=>"orders" }) do |f| %>
+        <h2>Блюда на <%= Date.today-created_day %></h2>
+
+          <% if Soup.created(created_day).present? %>
+            <h3>Первые блюда</h3>
+            <div class="row">
+              <% Soup.created(created_day).each do |soup| %>
+                <div class="col-md-3 col-sm-6">
+                  <div class="thumbnail">
+                    <img src="<%= soup.photo %>" alt="<%= soup.name %>">
+                    <div class="caption">
+                      <h4><%= soup.name %></h4>
+                      <p>Цена: <%= soup.price %></p>
+                      <% if user_signed_in? && created_day == 0 %>
+                        <input id="order_soup_id" name="order[soup_id]" type="radio" value="<%= soup.id %>" checked>
+                      <% end %>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              <% end %>
             </div>
+          <% else %>
+            <p>На этот день первых блюд нет</p>
           <% end %>
-        </div>
-      <% end %>
 
-      <% if Cereal.where(created_at: (Time.now.midnight..Time.now.midnight + 1.day)).present? %>
-        <h3>Вторые блюда</h3>
-        <div class="row">
-          <% Cereal.where(created_at: (Time.now.midnight..Time.now.midnight + 1.day)).each do |cereal| %>
-            <div class="col-md-3 col-sm-6">
-              <div class="thumbnail">
-                <img src="<%= cereal.photo %>" alt="<%= cereal.name %>">
-                <div class="caption">
-                  <h4><%= cereal.name %></h4>
-                  <p>Цена: <%= cereal.price %></p>
-                  <% if user_signed_in? %>
-                    <input id="order_cereal_id" name="order[cereal_id]" type="radio" value="<%= cereal.id %>" checked>
-                  <% end %>
-                  <% if current_user == User.first %>
-                    <%= link_to 'Редактировать', edit_cereal_path(cereal), :title => 'Редактировать' %>
-                  <% end %>
+          <% if Cereal.created(created_day).present? %>
+            <h3>Вторые блюда</h3>
+            <div class="row">
+              <% Cereal.created(created_day).each do |cereal| %>
+                <div class="col-md-3 col-sm-6">
+                  <div class="thumbnail">
+                    <img src="<%= cereal.photo %>" alt="<%= cereal.name %>">
+                    <div class="caption">
+                      <h4><%= cereal.name %></h4>
+                      <p>Цена: <%= cereal.price %></p>
+                      <% if user_signed_in? && created_day == 0 %>
+                        <input id="order_cereal_id" name="order[cereal_id]" type="radio" value="<%= cereal.id %>" checked>
+                      <% end %>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              <% end %>
             </div>
+          <% else %>
+            <p>На этот день вторых блюд нет</p>
           <% end %>
-        </div>
-      <% end %>
 
-      <% if Drink.where(created_at: (Time.now.midnight..Time.now.midnight + 1.day)).present? %>
-        <h3>Напитки</h3>
-        <div class="row">
-          <% Drink.where(created_at: (Time.now.midnight..Time.now.midnight + 1.day)).each do |drink| %>
-            <div class="col-md-3 col-sm-6">
-              <div class="thumbnail">
-                <img src="<%= drink.photo %>" alt="<%= drink.name %>">
-                <div class="caption">
-                  <h4><%= drink.name %></h4>
-                  <p>Цена: <%= drink.price %></p>
-                  <% if user_signed_in? %>
-                    <input id="order_drink_id" name="order[drink_id]" type="radio" value="<%= drink.id %>" checked>
-                  <% end %>
-                  <% if current_user == User.first %>
-                    <%= link_to 'Редактировать', edit_drink_path(drink), :title => 'Редактировать' %>
-                  <% end %>
+          <% if Drink.created(created_day).present? %>
+            <h3>Напитки</h3>
+            <div class="row">
+              <% Drink.created(created_day).each do |drink| %>
+                <div class="col-md-3 col-sm-6">
+                  <div class="thumbnail">
+                    <img src="<%= drink.photo %>" alt="<%= drink.name %>">
+                    <div class="caption">
+                      <h4><%= drink.name %></h4>
+                      <p>Цена: <%= drink.price %></p>
+                      <% if user_signed_in? && created_day == 0 %>
+                        <input id="order_drink_id" name="order[drink_id]" type="radio" value="<%= drink.id %>" checked>
+                      <% end %>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              <% end %>
             </div>
+            <%= f.button :submit if user_signed_in? && created_day == 0 %>
+          <% else %>
+            <p>На этот день напитков нет</p>
           <% end %>
-        </div>
-        <%= f.button :submit if user_signed_in? %>
-      <% end %>
-    <% end %>
-  </div>
-
-  <div class="tab-pane fade" id="today-1">
-    <h2>Блюда на <%= Date::DAYNAMES[Date.today.wday-1] %></h2>
-    <% if Soup.where(created_at: (Time.now.midnight - 1.day)..Time.now.midnight).present? %>
-      <h3>Первые блюда</h3>
-      <div class="row">
-        <% Soup.where(created_at: (Time.now.midnight - 1.day)..Time.now.midnight).each do |soup| %>
-          <div class="col-md-3 col-sm-6">
-            <div class="thumbnail">
-              <img src="<%= soup.photo %>" alt="<%= soup.name %>">
-              <div class="caption">
-                <h4><%= soup.name %></h4>
-                <p>Цена: <%= soup.price %></p>
-              </div>
-            </div>
-          </div>
         <% end %>
       </div>
-    <% end %>
-
-    <% if Cereal.where(created_at: (Time.now.midnight - 1.day)..Time.now.midnight).present? %>
-      <h3>Вторые блюда</h3>
-      <div class="row">
-        <% Cereal.where(created_at: (Time.now.midnight - 1.day)..Time.now.midnight).each do |cereal| %>
-          <div class="col-md-3 col-sm-6">
-            <div class="thumbnail">
-              <img src="<%= cereal.photo %>" alt="<%= cereal.name %>">
-              <div class="caption">
-                <h4><%= cereal.name %></h4>
-                <p>Цена: <%= cereal.price %></p>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-
-    <% if Drink.where(created_at: (Time.now.midnight - 1.day)..Time.now.midnight).present? %>
-      <h3>Напитки</h3>
-      <div class="row">
-        <% Drink.where(created_at: (Time.now.midnight - 1.day)..Time.now.midnight).each do |drink| %>
-          <div class="col-md-3 col-sm-6">
-            <div class="thumbnail">
-              <img src="<%= drink.photo %>" alt="<%= drink.name %>">
-              <div class="caption">
-                <h4><%= drink.name %></h4>
-                <p>Цена: <%= drink.price %></p>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-
-  <div class="tab-pane fade" id="today-2">
-    <h2>Блюда на <%= Date::DAYNAMES[Date.today.wday-2] %></h2>
-    <% if Soup.where(created_at: (Time.now.midnight - 2.day)..Time.now.midnight- 1.day).present? %>
-      <h3>Первые блюда</h3>
-      <div class="row">
-        <% Soup.where(created_at: (Time.now.midnight - 2.day)..Time.now.midnight- 1.day).each do |soup| %>
-          <div class="col-md-3 col-sm-6">
-            <div class="thumbnail">
-              <img src="<%= soup.photo %>" alt="<%= soup.name %>">
-              <div class="caption">
-                <h4><%= soup.name %></h4>
-                <p>Цена: <%= soup.price %></p>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-
-    <% if Cereal.where(created_at: (Time.now.midnight - 2.day)..Time.now.midnight- 1.day).present? %>
-      <h3>Вторые блюда</h3>
-      <div class="row">
-        <% Cereal.where(created_at: (Time.now.midnight - 2.day)..Time.now.midnight- 1.day).each do |cereal| %>
-          <div class="col-md-3 col-sm-6">
-            <div class="thumbnail">
-              <img src="<%= cereal.photo %>" alt="<%= cereal.name %>">
-              <div class="caption">
-                <h4><%= cereal.name %></h4>
-                <p>Цена: <%= cereal.price %></p>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-
-    <% if Drink.where(created_at: (Time.now.midnight - 2.day)..Time.now.midnight- 1.day).present? %>
-      <h3>Напитки</h3>
-      <div class="row">
-        <% Drink.where(created_at: (Time.now.midnight - 2.day)..Time.now.midnight- 1.day).each do |drink| %>
-          <div class="col-md-3 col-sm-6">
-            <div class="thumbnail">
-              <img src="<%= drink.photo %>" alt="<%= drink.name %>">
-              <div class="caption">
-                <h4><%= drink.name %></h4>
-                <p>Цена: <%= drink.price %></p>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-
-  <div class="tab-pane fade" id="today-3">
-    <h2>Блюда на <%= Date::DAYNAMES[Date.today.wday-3] %></h2>
-    <% if Soup.where(created_at: (Time.now.midnight - 3.day)..Time.now.midnight- 2.day).present? %>
-      <h3>Первые блюда</h3>
-      <div class="row">
-        <% Soup.where(created_at: (Time.now.midnight - 3.day)..Time.now.midnight- 2.day).each do |soup| %>
-          <div class="col-md-3 col-sm-6">
-            <div class="thumbnail">
-              <img src="<%= soup.photo %>" alt="<%= soup.name %>">
-              <div class="caption">
-                <h4><%= soup.name %></h4>
-                <p>Цена: <%= soup.price %></p>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-
-    <% if Cereal.where(created_at: (Time.now.midnight - 3.day)..Time.now.midnight- 2.day).present? %>
-      <h3>Вторые блюда</h3>
-      <div class="row">
-        <% Cereal.where(created_at: (Time.now.midnight - 3.day)..Time.now.midnight- 2.day).each do |cereal| %>
-          <div class="col-md-3 col-sm-6">
-            <div class="thumbnail">
-              <img src="<%= cereal.photo %>" alt="<%= cereal.name %>">
-              <div class="caption">
-                <h4><%= cereal.name %></h4>
-                <p>Цена: <%= cereal.price %></p>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-
-    <% if Drink.where(created_at: (Time.now.midnight - 3.day)..Time.now.midnight- 2.day).present? %>
-      <h3>Напитки</h3>
-      <div class="row">
-        <% Drink.where(created_at: (Time.now.midnight - 3.day)..Time.now.midnight- 2.day).each do |drink| %>
-          <div class="col-md-3 col-sm-6">
-            <div class="thumbnail">
-              <img src="<%= drink.photo %>" alt="<%= drink.name %>">
-              <div class="caption">
-                <h4><%= drink.name %></h4>
-                <p>Цена: <%= drink.price %></p>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-
-  <div class="tab-pane fade" id="today-4">
-    <h2>Блюда на <%= Date::DAYNAMES[Date.today.wday-4] %></h2>
-    <% if Soup.where(created_at: (Time.now.midnight - 4.day)..Time.now.midnight- 3.day).present? %>
-      <h3>Первые блюда</h3>
-      <div class="row">
-        <% Soup.where(created_at: (Time.now.midnight - 4.day)..Time.now.midnight- 3.day).each do |soup| %>
-          <div class="col-md-3 col-sm-6">
-            <div class="thumbnail">
-              <img src="<%= soup.photo %>" alt="<%= soup.name %>">
-              <div class="caption">
-                <h4><%= soup.name %></h4>
-                <p>Цена: <%= soup.price %></p>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-
-    <% if Cereal.where(created_at: (Time.now.midnight - 4.day)..Time.now.midnight- 3.day).present? %>
-      <h3>Вторые блюда</h3>
-      <div class="row">
-        <% Cereal.where(created_at: (Time.now.midnight - 4.day)..Time.now.midnight- 3.day).each do |cereal| %>
-          <div class="col-md-3 col-sm-6">
-            <div class="thumbnail">
-              <img src="<%= cereal.photo %>" alt="<%= cereal.name %>">
-              <div class="caption">
-                <h4><%= cereal.name %></h4>
-                <p>Цена: <%= cereal.price %></p>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-
-    <% if Drink.where(created_at: (Time.now.midnight - 4.day)..Time.now.midnight- 3.day).present? %>
-      <h3>Напитки</h3>
-      <div class="row">
-        <% Drink.where(created_at: (Time.now.midnight - 4.day)..Time.now.midnight- 3.day).each do |drink| %>
-          <div class="col-md-3 col-sm-6">
-            <div class="thumbnail">
-              <img src="<%= drink.photo %>" alt="<%= drink.name %>">
-              <div class="caption">
-                <h4><%= drink.name %></h4>
-                <p>Цена: <%= drink.price %></p>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-
-  <div class="tab-pane fade" id="today-5">
-    <h2>Блюда на <%= Date::DAYNAMES[Date.today.wday-5] %></h2>
-    <% if Soup.where(created_at: (Time.now.midnight - 5.day)..Time.now.midnight- 4.day).present? %>
-      <h3>Первые блюда</h3>
-      <div class="row">
-        <% Soup.where(created_at: (Time.now.midnight - 5.day)..Time.now.midnight- 4.day).each do |soup| %>
-          <div class="col-md-3 col-sm-6">
-            <div class="thumbnail">
-              <img src="<%= soup.photo %>" alt="<%= soup.name %>">
-              <div class="caption">
-                <h4><%= soup.name %></h4>
-                <p>Цена: <%= soup.price %></p>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-
-    <% if Cereal.where(created_at: (Time.now.midnight - 5.day)..Time.now.midnight- 4.day).present? %>
-      <h3>Вторые блюда</h3>
-      <div class="row">
-        <% Cereal.where(created_at: (Time.now.midnight - 5.day)..Time.now.midnight- 4.day).each do |cereal| %>
-          <div class="col-md-3 col-sm-6">
-            <div class="thumbnail">
-              <img src="<%= cereal.photo %>" alt="<%= cereal.name %>">
-              <div class="caption">
-                <h4><%= cereal.name %></h4>
-                <p>Цена: <%= cereal.price %></p>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-
-    <% if Drink.where(created_at: (Time.now.midnight - 5.day)..Time.now.midnight- 4.day).present? %>
-      <h3>Напитки</h3>
-      <div class="row">
-        <% Drink.where(created_at: (Time.now.midnight - 5.day)..Time.now.midnight- 4.day).each do |drink| %>
-          <div class="col-md-3 col-sm-6">
-            <div class="thumbnail">
-              <img src="<%= drink.photo %>" alt="<%= drink.name %>">
-              <div class="caption">
-                <h4><%= drink.name %></h4>
-                <p>Цена: <%= drink.price %></p>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-
-  <div class="tab-pane fade" id="today-6">
-    <h2>Блюда на <%= Date::DAYNAMES[Date.today.wday-6] %></h2>
-    <% if Soup.where(created_at: (Time.now.midnight - 6.day)..Time.now.midnight- 5.day).present? %>
-      <h3>Первые блюда</h3>
-      <div class="row">
-        <% Soup.where(created_at: (Time.now.midnight - 6.day)..Time.now.midnight- 5.day).each do |soup| %>
-          <div class="col-md-3 col-sm-6">
-            <div class="thumbnail">
-              <img src="<%= soup.photo %>" alt="<%= soup.name %>">
-              <div class="caption">
-                <h4><%= soup.name %></h4>
-                <p>Цена: <%= soup.price %></p>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-
-    <% if Cereal.where(created_at: (Time.now.midnight - 6.day)..Time.now.midnight- 5.day).present? %>
-      <h3>Вторые блюда</h3>
-      <div class="row">
-        <% Cereal.where(created_at: (Time.now.midnight - 6.day)..Time.now.midnight- 5.day).each do |cereal| %>
-          <div class="col-md-3 col-sm-6">
-            <div class="thumbnail">
-              <img src="<%= cereal.photo %>" alt="<%= cereal.name %>">
-              <div class="caption">
-                <h4><%= cereal.name %></h4>
-                <p>Цена: <%= cereal.price %></p>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-
-    <% if Drink.where(created_at: (Time.now.midnight - 6.day)..Time.now.midnight- 5.day).present? %>
-      <h3>Напитки</h3>
-      <div class="row">
-        <% Drink.where(created_at: (Time.now.midnight - 6.day)..Time.now.midnight- 5.day).each do |drink| %>
-          <div class="col-md-3 col-sm-6">
-            <div class="thumbnail">
-              <img src="<%= drink.photo %>" alt="<%= drink.name %>">
-              <div class="caption">
-                <h4><%= drink.name %></h4>
-                <p>Цена: <%= drink.price %></p>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
+    <% created_day += 1 %>
+  <% end %>
 </div>

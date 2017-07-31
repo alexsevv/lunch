@@ -1,4 +1,4 @@
-class Api::OrdersController < ApplicationController
+class Api::OrdersController < Api::BaseController
   before_action :authenticate_user
 
   def index
@@ -10,24 +10,6 @@ class Api::OrdersController < ApplicationController
                                           ], only: [:id, :created_at])
   end
 
-  private
-    def authenticate_user
-      user_token = request.headers['X-USER-TOKEN']
-      if user_token
-        @user = User.find_by_token(user_token)
-        #Unauthorize if a user object is not returned
-        if @user.nil?
-          return unauthorize
-        end
-      else
-        return unauthorize
-      end
-    end
-
-    def unauthorize
-      head status: :unauthorized
-      return false
-    end
 end
 
 # получить инфу можно запросом:
