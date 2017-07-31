@@ -9,7 +9,6 @@ class Api::OrdersController < Api::BaseController
                                            { drink: { only: [:name, :price] }}
                                           ], only: [:id, :created_at])
   end
-
 end
 
 # получить инфу можно запросом:

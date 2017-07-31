@@ -9,9 +9,7 @@ class User < ApplicationRecord
   has_many :drinks
 
   before_validation :set_name, on: :create
-
   has_secure_token :token
-
   before_save :set_admin
 
   private

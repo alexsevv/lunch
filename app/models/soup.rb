@@ -10,4 +10,3 @@ class Soup < ApplicationRecord
     where(created_at: (Date.today.midnight-time.day..Date.tomorrow.midnight-time.day))
   end
 end
-

@@ -2,16 +2,16 @@
 <% if current_user.admin? %>
   <div class="row">
     <div class="col-md-12 buffer-top">
-        <div class="row buffer-top">
-          <table class="table table-striped">
-            <tr>
-              <td><b>ID</b></td>
-              <td><b>Имя</b></td>
-              <td><b>Дата создания</b></td>
-              <td><b>Управление</b></td>
-              <td><b>Фото</b></td>
-            </tr>
-            <% @drinks.each do |drink| %>
+      <div class="row buffer-top">
+        <table class="table table-striped">
+          <tr>
+            <td><b>ID</b></td>
+            <td><b>Имя</b></td>
+            <td><b>Дата создания</b></td>
+            <td><b>Управление</b></td>
+            <td><b>Фото</b></td>
+          </tr>
+          <% @drinks.each do |drink| %>
             <tr>
               <td><%= drink.id %></td>
               <td><%= drink.name %></td>
@@ -19,10 +19,10 @@
               <td><%= link_to fa_icon('pencil'), edit_drink_path(drink), :title => 'Редактировать' %></td>
               <td><img src="<%= drink.photo.thumb.url %>" alt="<%= drink.name %>"></td>
             </tr>
-            <% end %>
-          </table>
-          <%= link_to 'Добавить напиток', new_drink_path, class: 'btn btn-primary' %>
-        </div>
+          <% end %>
+        </table>
+        <%= link_to 'Добавить напиток', new_drink_path, class: 'btn btn-primary' %>
+      </div>
     </div>
   </div>
 <% else %>

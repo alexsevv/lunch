@@ -2,30 +2,28 @@
   <h1>Пользователи</h1>
   <div class="row">
     <div class="col-md-12 buffer-top">
-        <div class="row buffer-top">
-          <table class="table table-striped">
-            <tr>
-              <td><b>ID</b></td>
-              <td><b>Имя</b></td>
-              <td><b>Email</b></td>
-              <td><b>Число заказов</b></td>
-              <td><b>Дата регистрации</b></td>
-              <td><b>Управление</b></td>
-            </tr>
-            <% @users.each do |user| %>
-            <tr>
-              <td><%= user.id %></td>
-              <td><%= link_to user.name, user_path(user) %></td>
-              <td><%= user.email %></td>
-              <td><%= user.orders.size %></td>
-              <td><%= l user.created_at, format: :long %></td>
-              <td>
-                <%= link_to fa_icon('pencil'), edit_user_path(user), :title => 'Редактировать' %>
-              </td>
-            </tr>
-            <% end %>
-          </table>
-        </div>
+      <div class="row buffer-top">
+        <table class="table table-striped">
+          <tr>
+            <td><b>ID</b></td>
+            <td><b>Имя</b></td>
+            <td><b>Email</b></td>
+            <td><b>Число заказов</b></td>
+            <td><b>Дата регистрации</b></td>
+            <td><b>Управление</b></td>
+          </tr>
+          <% @users.each do |user| %>
+          <tr>
+            <td><%= user.id %></td>
+            <td><%= link_to user.name, user_path(user) %></td>
+            <td><%= user.email %></td>
+            <td><%= user.orders.size %></td>
+            <td><%= l user.created_at, format: :long %></td>
+            <td><%= link_to fa_icon('pencil'), edit_user_path(user), :title => 'Редактировать' %></td>
+          </tr>
+          <% end %>
+        </table>
+      </div>
     </div>
   </div>
 <% else %>

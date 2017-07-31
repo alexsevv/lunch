@@ -2,7 +2,6 @@ class DrinksController < ApplicationController
   before_action :set_drink, only: [:edit, :update]
 
   # GET /drinks
-
   def index
     @drinks = Drink.all
   end

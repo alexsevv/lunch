@@ -26,7 +26,7 @@ class UsersController < ApplicationController
     if @user.save
       redirect_to @user, notice: I18n.t('controllers.users.created')
     else
-      render :new, notice: 'no'
+      render :new
     end
   end
 
@@ -35,7 +35,7 @@ class UsersController < ApplicationController
     if @user.update(user_params)
       redirect_to @user, notice: I18n.t('controllers.users.updated')
     else
-      render :edit, notice: 'no'
+      render :edit
     end
   end
 
