@@ -12,12 +12,14 @@ class User < ApplicationRecord
 
   has_secure_token :token
 
-  before_save :set_admin, on: :create
+  before_save :set_admin
 
   private
 
   def set_admin
-    self.admin = User.count == 0
+    if User.count == 0
+      self.admin = true
+    end
   end
 
   def set_name
