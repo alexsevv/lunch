@@ -12,7 +12,7 @@ class User < ApplicationRecord
 
   has_secure_token :token
 
-  before_save :set_admin
+  before_save :set_admin, on: :create
 
   private
 
