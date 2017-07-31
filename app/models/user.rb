@@ -12,7 +12,13 @@ class User < ApplicationRecord
 
   has_secure_token :token
 
+  before_save :set_admin
+
   private
+
+  def set_admin
+    self.admin = User.count == 0
+  end
 
   def set_name
     self.name = "User#{rand(999)}" if name.blank?

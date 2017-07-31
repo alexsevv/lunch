@@ -1,5 +1,5 @@
 <h1>Редактирование Второго блюда</h1>
-<% if current_user == User.first %>
+<% if current_user.admin? %>
   <div class="row">
     <div class="col-md-6">
       <%= render 'form', cereal: @cereal %>
