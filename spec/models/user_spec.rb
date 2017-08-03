@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe User do
+RSpec.describe User do
   #проверяем, что только первый юзер получит админский доступ
   it "only first user Admin" do
     user1 = FactoryGirl.create(:user)
