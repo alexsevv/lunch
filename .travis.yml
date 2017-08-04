@@ -2,5 +2,4 @@ language: ruby
 sudo: false
 script: bundle exec rspec
 
-before_script:
-  - cp config/database.yml.example config/database.yml
+script: cp config/database.yml.example config/database.yml
